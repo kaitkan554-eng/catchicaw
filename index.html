@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch Emoji</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<div id="gameOverModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="resultTitle">🎉 Permainan Selesai</h2>
+
+        <p id="resultMessage"></p>
+
+        <div class="final-score">
+            Score Kamu
+            <span id="finalScore">0</span>
+        </div>
+
+        <div class="modal-buttons">
+
+            <button id="playAgainBtn">
+                🔄 Main Lagi
+            </button>
+
+            <button id="homeBtn">
+                🏠 Beranda
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<body>
+
+    <!-- Splash Screen -->
+    <div id="startScreen">
+        <h1>🎮 CATCHICAW</h1>
+
+        <p>
+            Tangkap muka icaw 😀<br>
+            Hindari emoji 😈
+        </p>
+
+        <button id="startBtn">
+            ▶ MULAI BERMAIN
+        </button>
+    </div>
+
+    <!-- Game -->
+    <div id="gameContainer">
+
+        <div class="game-header">
+            <h1 class="game-title">🎮 CatchIcaw</h1>
+        </div>
+
+        <div class="info">
+            <div>⭐ Score: <span id="score">0</span></div>
+            <div>⏰ Time: <span id="time">30</span></div>
+        </div>
+
+        <div id="gameArea"></div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
