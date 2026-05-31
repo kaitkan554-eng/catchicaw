@@ -142,15 +142,13 @@ function createObject() {
 
             score -= 1;
 
-            clickEmoji.currentTime = 0;
-            clickEmoji.play();
+            clickEmoji.cloneNode().play();
 
         } else {
 
             score += 1;
 
-            clickBubble.currentTime = 0;
-            clickBubble.play();
+            clickBubble.cloneNode().play();
         }
 
         scoreText.textContent = score;
