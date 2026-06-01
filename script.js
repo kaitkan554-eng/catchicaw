@@ -6,7 +6,7 @@ const startBtn = document.getElementById("startBtn");
 const startScreen = document.getElementById("startScreen");
 const gameContainer = document.getElementById("gameContainer");
 
-const emojis = ["😂", "😍", "🥳", "😎", "🔥"];
+const emojis = ["👹", "💩", "🐷", "💃", "👻"];
 
 const photos = [
     "images/emojiica1.png",
@@ -21,7 +21,9 @@ const photos = [
 // SOUND
 const clickBubble = new Audio("sounds/clickbubble.mp3");
 const clickEmoji = new Audio("sounds/clickemoji.mp3");
-const finishedGame = new Audio("sounds/finishedgame.mp3");
+const winGame = new Audio("sounds/finishedgame.mp3");
+const winGame1 = new Audio("sounds/wingame2.mp3");
+const looseGame = new Audio("sounds/loosegame.mp3");
 const bgm = new Audio("sounds/dj-kicau-mania.mp3");
 
 const gameOverModal =
@@ -50,6 +52,7 @@ let gameRunning = false;
 
 let spawnInterval = null;
 let timerInterval = null;
+let panicMode = false;
 
 // ==========================
 // START GAME
@@ -74,7 +77,7 @@ function createObject() {
 
     if (!gameRunning) return;
 
-    const isEmoji = Math.random() < 0.7;
+    const isEmoji = Math.random() < 0.5;
 
     let object;
 
@@ -97,15 +100,17 @@ function createObject() {
 
     const size = 80;
 
-    object.style.left =
-        Math.random() * (gameArea.offsetWidth - size) + "px";
+    const startX =
+        Math.random() * (gameArea.offsetWidth - size);
 
+    object.style.left = startX + "px";
     object.style.top = "-100px";
 
     gameArea.appendChild(object);
 
     let position = -100;
-    const speed = 3 + Math.random() * 4;
+
+    let wave = Math.random() * 100;
 
     const fall = setInterval(() => {
 
@@ -120,7 +125,27 @@ function createObject() {
             return;
         }
 
+        let speed;
+
+        if (time <= 15) {
+
+            speed = 8 + Math.random() * 3;
+
+            wave += 0.18;
+
+            const zigzag =
+                Math.sin(wave) * 50;
+
+            object.style.left =
+                (startX + zigzag) + "px";
+
+        } else {
+
+            speed = 3 + Math.random() * 3;
+        }
+
         position += speed;
+
         object.style.top = position + "px";
 
         if (position > gameArea.offsetHeight) {
@@ -173,18 +198,21 @@ function startGame() {
     gameArea.innerHTML = "";
 
     score = 0;
-    time = 30;
+    time = 60;
 
     scoreText.textContent = score;
     timeText.textContent = time;
 
     gameRunning = true;
 
+    panicMode = false;
+    gameArea.classList.remove("panic-mode");
+
     spawnInterval = setInterval(() => {
 
         createObject();
 
-    }, 600);
+    }, time <= 10 ? 250 : 600);
 
     timerInterval = setInterval(() => {
 
@@ -192,6 +220,14 @@ function startGame() {
 
         timeText.textContent = time;
 
+        if (time === 15 && !panicMode) {
+
+            panicMode = true;
+
+            gameArea.classList.add("panic-mode");
+
+            showPanicText();
+        }
         if (time <= 0) {
 
             endGame();
@@ -214,9 +250,6 @@ function endGame() {
     bgm.pause();
     bgm.currentTime = 0;
 
-    finishedGame.currentTime = 0;
-    finishedGame.play();
-
     gameArea.innerHTML = "";
 
     finalScore.textContent = score;
@@ -226,29 +259,38 @@ function endGame() {
 
     if (score < 1) {
 
-        resultTitle.textContent = "😭 Yah Kalah";
+        looseGame.currentTime = 0;
+        looseGame.play();
+
+        resultTitle.textContent = "😑PAYAH! Lo Kalah";
         resultMessage.textContent =
-            "Kamu terlalu banyak menangkap emoji. Coba lagi ya!";
+            "Payah kebanyakan tangkap emoji! ";
 
         resultTitle.classList.add("result-bad");
 
-    } else if (score < 10) {
+    } else if (score < 20) {
+
+        winGame1.currentTime = 0;
+        winGame1.play();
 
         resultTitle.textContent = "🙂 Lumayan";
         resultMessage.textContent =
-            "Sudah cukup bagus, tapi masih bisa lebih tinggi.";
+            "Cukup, tapi masih payah. ga bisa lebih tinggi lagi?🤣";
 
         resultTitle.classList.add("result-normal");
 
     } else {
 
-        resultTitle.textContent = "🎉 Hebat!";
+        winGame.currentTime = 0;
+        winGame.play();
+
+        resultTitle.textContent = "🎉oke deh hebat!";
         resultMessage.textContent =
-            "Keren! Kamu berhasil menghindari emoji dan menangkap banyak foto.";
+            "iya deh lo Keren! berhasil menghindari emoji dan menangkap banyak foto.";
 
         resultTitle.classList.add("result-good");
     }
-
+    gameArea.classList.remove("panic-mode");
     gameOverModal.classList.add("show");
 }
 
@@ -269,3 +311,20 @@ homeBtn.addEventListener("click", () => {
     startScreen.style.display = "flex";
     gameContainer.style.display = "none";
 });
+
+function showPanicText() {
+
+    const text = document.createElement("div");
+
+    text.className = "panic-text";
+
+    text.innerHTML = "🔥PANIC MODE🔥";
+
+    document.body.appendChild(text);
+
+    setTimeout(() => {
+
+        text.remove();
+
+    }, 2000);
+}

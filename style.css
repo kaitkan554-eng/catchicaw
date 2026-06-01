@@ -75,6 +75,26 @@ body{
    GAME
 ========================= */
 
+.game-title{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    /* gap:5px; */
+
+    flex-wrap:wrap;
+
+    text-align:center;
+}
+
+.title-mascot{
+
+    width:clamp(100px, 20vw, 150px);
+
+    height:auto;
+
+    object-fit:contain;
+}
+
 #gameContainer{
     display:none;
     height:100vh;
@@ -338,4 +358,68 @@ body{
 
 .result-good{
     color:#E85D8E;
+}
+
+.panic-mode{
+
+    animation: panicBorder .5s infinite;
+}
+
+@keyframes panicBorder{
+
+    0%{
+        box-shadow:0 0 10px #ff9dbb;
+    }
+
+    50%{
+        box-shadow:0 0 25px #ff4d6d;
+    }
+
+    100%{
+        box-shadow:0 0 10px #ff9dbb;
+    }
+}
+
+.panic-text{
+
+    position:fixed;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    font-size:2.5rem;
+    font-weight:bold;
+
+    color:#ff4d6d;
+
+    text-shadow:
+        0 0 10px white,
+        0 0 20px white;
+
+    z-index:9999;
+
+    animation:panicZoom .3s ease;
+}
+
+@keyframes panicZoom{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.5);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
 }
