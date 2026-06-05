@@ -279,7 +279,7 @@ function endGame() {
 
         resultTitle.classList.add("result-normal");
 
-    } else if (10 <= score < 40 ) {
+    } else if (score >= 10 && score <= 40 ) {
 
         winGame1.currentTime = 0;
         winGame1.play();
