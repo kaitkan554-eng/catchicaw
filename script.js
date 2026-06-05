@@ -264,18 +264,29 @@ function endGame() {
 
         resultTitle.textContent = "😑PAYAH! Lo Kalah";
         resultMessage.textContent =
-            "Payah kebanyakan tangkap emoji! ";
+            "Jangan kebanyakan tangkap emoji! ngerti gaaaa? ";
 
         resultTitle.classList.add("result-bad");
 
-    } else if (score < 20) {
+    } else if (score < 10) {
+
+        looseGame.currentTime = 0;
+        looseGame.play();
+
+        resultTitle.textContent = "🤣 Dikit banget tangkapan u";
+        resultMessage.textContent =
+            "Masih payah aja, ga bisa lebih tinggi lagi?🤣";
+
+        resultTitle.classList.add("result-normal");
+
+    } else if (10 <= score < 40 ) {
 
         winGame1.currentTime = 0;
         winGame1.play();
 
-        resultTitle.textContent = "🙂 Lumayan";
+        resultTitle.textContent = "😐 Lumayan";
         resultMessage.textContent =
-            "Cukup, tapi masih payah. ga bisa lebih tinggi lagi?🤣";
+            "harusnya sihh kau bisa ya lebih tinggi lagi";
 
         resultTitle.classList.add("result-normal");
 
