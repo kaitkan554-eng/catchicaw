@@ -26,6 +26,17 @@ const winGame1 = new Audio("sounds/wingame2.mp3");
 const looseGame = new Audio("sounds/loosegame.mp3");
 const bgm = new Audio("sounds/dj-kicau-mania.mp3");
 
+function playSound(src) {
+
+    const audio = new Audio(src);
+
+    audio.volume = 1;
+
+    audio.play().catch(err => {
+        console.log(err);
+    });
+}
+
 const gameOverModal =
     document.getElementById("gameOverModal");
 
@@ -45,6 +56,21 @@ const resultMessage =
     document.getElementById("resultMessage");
 bgm.loop = true;
 bgm.volume = 0.3;
+
+bgm.preload = "auto";
+clickBubble.preload = "auto";
+clickEmoji.preload = "auto";
+winGame.preload = "auto";
+winGame1.preload = "auto";
+looseGame.preload = "auto";
+
+function ensureBgmPlaying() {
+
+    if (bgm.paused && gameRunning) {
+
+        bgm.play().catch(() => {});
+    }
+}
 
 let score = 0;
 let time = 30;
@@ -167,16 +193,20 @@ function createObject() {
 
             score -= 1;
 
-            clickEmoji.cloneNode().play();
+            // clickEmoji.cloneNode().play();
+            playSound("sounds/clickemoji.mp3");
 
         } else {
 
             score += 1;
 
-            clickBubble.cloneNode().play();
+            // clickBubble.cloneNode().play();
+            playSound("sounds/clickbubble.mp3");
         }
 
         scoreText.textContent = score;
+
+        ensureBgmPlaying();
 
         clearInterval(fall);
 
@@ -279,7 +309,7 @@ function endGame() {
 
         resultTitle.classList.add("result-normal");
 
-    } else if (score >= 10 && score <= 40 ) {
+    } else if (score >= 10 && score <= 45 ) {
 
         winGame1.currentTime = 0;
         winGame1.play();
